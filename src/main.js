@@ -4,6 +4,8 @@ import router from './router'
 import store from './store'
 import './registerServiceWorker'
 
+
+export const eventbus = new Vue();
 // feather js
 require('../public/js/feather.js');
 

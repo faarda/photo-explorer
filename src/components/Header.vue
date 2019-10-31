@@ -18,8 +18,8 @@
                 </div>
                 <div class="pagination">
                     <div class="wrapper">
-                        Page 1: <button class="pagination__btn" @click="previous" :disabled="navData.previous"><span data-feather="chevron-left"></span></button>
-                        <button class="pagination__btn" @click="next" :disabled="navData.next"><span data-feather="chevron-right"></span></button>
+                        Page 1: <button class="pagination__btn" @click="previous" :disabled="!navData.previous"><span data-feather="chevron-left"></span></button>
+                        <button class="pagination__btn" @click="next" :disabled="!navData.next"><span data-feather="chevron-right"></span></button>
                     </div>
                 </div>
             </div>

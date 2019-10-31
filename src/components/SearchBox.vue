@@ -8,6 +8,8 @@
 </template>
 
 <script>
+
+import {eventbus} from '../main';
 export default {
     name: "SearchBox",
     data: function(){
@@ -18,6 +20,8 @@ export default {
     methods:{
         runSearch(){
             this.$router.push({path: '/results', query: {keyword: this.keyword}})
+            eventbus.$emit('new-search', this.keyword );
+
         }
     }
 }
