@@ -4,6 +4,9 @@ import router from './router'
 import store from './store'
 import './registerServiceWorker'
 
+// feather js
+require('../public/js/feather.js');
+
 Vue.config.productionTip = false
 
 new Vue({

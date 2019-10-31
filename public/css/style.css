@@ -390,7 +390,7 @@ p.lead-text {
     height: 100vh;
     background-size: cover;
     background-repeat: no-repeat;
-    background-image: linear-gradient(to bottom, rgba(0, 31, 63, 0.6), rgba(0, 31, 63, 0.6)), url("/app/images/landing-bg.jpg");
+    background-image: linear-gradient(to bottom, rgba(0, 31, 63, 0.6), rgba(0, 31, 63, 0.6)), url("../img/landing-bg.jpg");
     display: grid;
     grid-template-columns: minmax(70%, 500px);
     align-content: center;
