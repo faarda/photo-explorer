@@ -1,32 +1,37 @@
 <template>
     <div class="results">
-        <app-header @next="nextResults" @previous="previousResults" :nav-data="navData" :search-term="searchTerm" :has-query="hasQuery"></app-header>
+        <app-header @next="nextResults" @previous="previousResults" @sort="sortPhotos" :page="page" :nav-data="navData" :search-term="searchTerm" :has-query="hasQuery"></app-header>
         <main-results :photos="photos" :status="status"></main-results>
+
+        <image-modal></image-modal>
     </div>
 </template>
 
 <script>
 import appHeader from "@/components/Header.vue";
 import mainResults from '@/components/MainResults.vue';
+import imageModal from '@/components/ImageModal.vue';
 import { eventbus } from '../main';
 export default {
     name: "Results",
     components: {
         appHeader,
-        mainResults
+        mainResults,
+        imageModal
     },
     data: function(){
         return {
             searchTerm: "",
             navData: {
-                next: true,
+                next: false,
                 previous: false
             },
             photos: [],
             status: "loading", //loading
             perPage: 20,
             page: 1,
-            next: ""
+            next: "",
+            sortBy: "d"
         }
     },
     created(){
@@ -53,11 +58,22 @@ export default {
     },
     methods: {
         nextResults(){
-            alert("Next result");
+            this.page = this.page + 1;
+            this.getPhotos();
         },
 
         previousResults(){
-            alert("Previous Results");
+            this.page = this.page - 1;
+
+            if(this.page < 1){
+                this.page = 1;
+            }
+
+            if(this.page == 1){
+                this.navData.previous = false;
+            }
+
+            this.displayPhotos();
         },
 
         getPhotos(){
@@ -65,6 +81,11 @@ export default {
             this.$store.dispatch('fetchData', {address: `https://api.pexels.com/v1/search?query=${this.searchTerm}&per_page=${this.perPage}&page=${this.page}`})
                 .then(data => {
                     let mainData = data.data;
+
+                    if(mainData.total_results < 1){
+                        this.status = "nothing";
+                        return;
+                    }
                     let photos = mainData.photos;
 
                     // adds the photos to the state
@@ -98,18 +119,34 @@ export default {
             // create an array of only medium photo url's
             let photosToShow = currentPhotos.map((val, id) => {
                 return {
-                    id: id,
-                    photo: val.src.medium
+                    id: id + (this.page * 20 - 20),
+                    photo: val.src.medium,
+                    views: Math.floor((Math.random() * 1000) + 1)
                 }
             });
 
             this.photos = photosToShow;
             this.status = "done";
+        },
+        sortPhotos(){
+            let sortBy = this.sortBy;
+
+            if(sortBy == "d"){
+                this.photos.sort((a,b) => (a.views > b.views) ? -1 : ((b.views > a.views) ? 1 : 0));
+                this.sortBy = "a"; 
+            }else{
+                this.photos.sort((a,b) => (a.views > b.views) ? 1 : ((b.views > a.views) ? -1 : 0));
+                this.sortBy = "d"; 
+            }
         }
     },
     watch: {
         searchTerm(newVal, oldVal){
-            // this.status = "loading";
+            if(oldVal !== ""){
+                this.page = 1;
+                this.$store.commit('EMPTY_PHOTOS');
+                this.getPhotos();
+            }
         }
     }
 }

@@ -12,6 +12,9 @@
 import {eventbus} from '../main';
 export default {
     name: "SearchBox",
+    props: {
+        query: String
+    },
     data: function(){
         return {
             keyword: "" 
@@ -22,6 +25,11 @@ export default {
             this.$router.push({path: '/results', query: {keyword: this.keyword}})
             eventbus.$emit('new-search', this.keyword );
 
+        }
+    },
+    created(){
+        if(typeof this.query !== 'undefined'){
+            this.keyword = this.query;
         }
     }
 }

@@ -19,6 +19,9 @@ export default new Vuex.Store({
   mutations: {
     ADD_PHOTOS: (state, payload) => {
       state.photos = [...state.photos, ...payload];
+    },
+    EMPTY_PHOTOS: (state) => {
+      state.photos = [];
     }
   },
   actions: {

@@ -4,6 +4,9 @@
             <div class="pull-up" v-if="status == 'no-query'">
                 <h4>Please type a query in the search bar above</h4>
             </div>
+            <div class="pull-up" v-if="status == 'nothing'" style="margin-top: -15px;">
+                <h4>There are no results for your search</h4>
+            </div>
             <div class="loading" v-else-if="status == 'loading'">
                 <p>
                     <img src="@/assets/loading.gif" alt="">

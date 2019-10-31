@@ -5,7 +5,7 @@
                 <img src="@/assets/logo.png" alt="Photo explorer logo">
             </div>
             <div class="header__search">
-                <search-box></search-box>
+                <search-box :query="searchTerm"></search-box>
             </div>
         </div>
         <div class="header__sub" v-if="hasQuery">
@@ -13,12 +13,12 @@
             <div class="results__action">
                 <div class="sort-results">
                     <a>
-                        <span data-feather="sliders"></span> <span class="h-sm">Sort by views</span>
+                        <span data-feather="sliders"></span> <span class="h-sm" @click="$emit('sort')">Sort by views</span>
                     </a>
                 </div>
                 <div class="pagination">
                     <div class="wrapper">
-                        Page 1: <button class="pagination__btn" @click="previous" :disabled="!navData.previous"><span data-feather="chevron-left"></span></button>
+                        Page {{page}}: <button class="pagination__btn" @click="previous" :disabled="!navData.previous"><span data-feather="chevron-left"></span></button>
                         <button class="pagination__btn" @click="next" :disabled="!navData.next"><span data-feather="chevron-right"></span></button>
                     </div>
                 </div>
@@ -34,7 +34,8 @@ export default {
     props: {
         searchTerm: String,
         navData: Object,
-        hasQuery: Boolean
+        hasQuery: Boolean,
+        page: Number
     },
     components: {
         searchBox
